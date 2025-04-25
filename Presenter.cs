@@ -1,11 +1,11 @@
 ﻿using System;
 
-public class DirectorySyncPresenter
+public class Presenter
 {
-  private readonly DirectorySyncModel _model;
+  private readonly Model _model;
   private readonly IDirectorySyncView _view;
 
-  public DirectorySyncPresenter(DirectorySyncModel model, IDirectorySyncView view)
+  public Presenter(Model model, IDirectorySyncView view)
   {
     _model = model;
     _view = view;

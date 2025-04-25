@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 
-public class DirectorySyncModel
+public class Model
 {
   public string DirectoryPath1 { get; set; }
   public string DirectoryPath2 { get; set; }
 
-  public DirectorySyncModel(string dir1, string dir2)
+  public Model(string dir1, string dir2)
   {
     DirectoryPath1 = dir1;
     DirectoryPath2 = dir2;
