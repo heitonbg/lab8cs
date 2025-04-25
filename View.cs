@@ -8,7 +8,7 @@ public interface IDirectorySyncView
     void ShowMessage(string message);
 }
 
-public class WindowsFormsDirectorySyncView : Form, IDirectorySyncView
+public class View : Form, IDirectorySyncView
 {
     private TextBox logTextBox;
     private Button syncButton;
@@ -17,7 +17,7 @@ public class WindowsFormsDirectorySyncView : Form, IDirectorySyncView
     private Label dir1Label;
     private Label dir2Label;
 
-    public WindowsFormsDirectorySyncView()
+    public View()
     {
         InitializeComponents();
     }
@@ -33,7 +33,7 @@ public class WindowsFormsDirectorySyncView : Form, IDirectorySyncView
         dir2Label = new Label { Text = "Директория 2:", Location = new System.Drawing.Point(10, 50), AutoSize = true };
         dir2TextBox = new TextBox { Location = new System.Drawing.Point(100, 50), Width = 300 };
 
-        syncButton = new Button { Text = "Синхронизировать", Location = new System.Drawing.Point(10, 80), Width = 100 };
+        syncButton = new Button { Text = "Синхронизировать", Location = new System.Drawing.Point(10, 80), Width = 120 };
         syncButton.Click += SyncButton_Click;
 
         logTextBox = new TextBox
