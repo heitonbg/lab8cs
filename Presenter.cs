@@ -2,35 +2,35 @@
 
 public class DirectorySyncPresenter
 {
-    private readonly DirectorySyncModel _model;
-    private readonly IDirectorySyncView _view;
+  private readonly DirectorySyncModel _model;
+  private readonly IDirectorySyncView _view;
 
-    public DirectorySyncPresenter(DirectorySyncModel model, IDirectorySyncView view)
+  public DirectorySyncPresenter(DirectorySyncModel model, IDirectorySyncView view)
+  {
+    _model = model;
+    _view = view;
+  }
+
+  public void CompareAndSynchronize()
+  {
+    try
     {
-        _model = model;
-        _view = view;
-    }
+      var changes = _model.CompareDirectories();
+      _view.ShowChanges(changes);
 
-    public void CompareAndSynchronize()
+      if (changes.Count > 0)
+      {
+        _model.SynchronizeDirectories();
+        _view.ShowMessage("Синхронизация завершена.");
+      }
+      else
+      {
+        _view.ShowMessage("Директории уже синхронизированы.");
+      }
+    }
+    catch (Exception ex)
     {
-        try
-        {
-            var changes = _model.CompareDirectories();
-            _view.ShowChanges(changes);
-
-            if (changes.Count > 0)
-            {
-                _model.SynchronizeDirectories();
-                _view.ShowMessage("Синхронизация завершена.");
-            }
-            else
-            {
-                _view.ShowMessage("Директории уже синхронизированы.");
-            }
-        }
-        catch (Exception ex)
-        {
-            _view.ShowMessage($"Ошибка: {ex.Message}");
-        }
+      _view.ShowMessage($"Ошибка: {ex.Message}");
     }
+  }
 }
