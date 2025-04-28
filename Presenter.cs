@@ -1,36 +1,48 @@
 ﻿using System;
+using System.Collections.Generic;
 
 public class Presenter
 {
-  private readonly Model _model;
-  private readonly IDirectorySyncView _view;
+    private readonly View _view;
+    private Model _model;
 
-  public Presenter(Model model, IDirectorySyncView view)
-  {
-    _model = model;
-    _view = view;
-  }
-
-  public void CompareAndSynchronize()
-  {
-    try
+    public Presenter(View view)
     {
-      var changes = _model.CompareDirectories();
-      _view.ShowChanges(changes);
+        _view = view;
+        _view.SyncRequested += OnSyncRequested;
+    }
 
-      if (changes.Count > 0)
-      {
-        _model.SynchronizeDirectories();
-        _view.ShowMessage("Синхронизация завершена.");
-      }
-      else
-      {
-        _view.ShowMessage("Директории уже синхронизированы.");
-      }
-    }
-    catch (Exception ex)
+    private void OnSyncRequested(object sender, EventArgs e)
     {
-      _view.ShowMessage($"Ошибка: {ex.Message}");
+        try
+        {
+            var dir1 = _view.DirectoryPath1;
+            var dir2 = _view.DirectoryPath2;
+
+            if (!System.IO.Directory.Exists(dir1) || !System.IO.Directory.Exists(dir2))
+            {
+                _view.ShowMessage("Одна из указанных директорий не существует.");
+                return;
+            }
+
+            _model = new Model(dir1, dir2);
+
+            var changes = _model.CompareDirectories();
+            _view.ShowChanges(changes);
+
+            if (changes.Count > 0)
+            {
+                _model.SynchronizeDirectories();
+                _view.ShowMessage("Синхронизация завершена.");
+            }
+            else
+            {
+                _view.ShowMessage("Директории уже синхронизированы.");
+            }
+        }
+        catch (Exception ex)
+        {
+            _view.ShowMessage($"Ошибка: {ex.Message}");
+        }
     }
-  }
 }
